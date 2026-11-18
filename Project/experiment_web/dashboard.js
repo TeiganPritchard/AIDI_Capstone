@@ -7,7 +7,7 @@ const labels = {
     study_athlete_cv5: "Athlete-disjoint CV",
     binary_cv3: "3-fold screen", binary_cv5: "5-fold finalists", binary_test: "Session holdout",
     binary_athlete_cv5: "Athlete-disjoint CV",
-    study_sweep_cv3: "XGBoost sweep · 3-fold CV",
+    study_sweep_cv3: "Model sweep · 3-fold CV",
     binary_sweep_cv3: "XGBoost sweep · 3-fold CV",
 };
 const modelNames = {
@@ -64,16 +64,15 @@ function updateSummary() {
     byId("run-count").textContent = state.runs.length;
     const models = new Set(state.runs.map((run) => run.model)).size;
     byId("model-count").textContent = `${models} ${models === 1 ? "model" : "models"}`;
-    const comparisons = [["binary", "binary_cv5"], ["multiclass", "study_cv5"]];
-    for (const [target, preferredStage] of comparisons) {
-        const finalists = state.runs.filter((run) => run.evaluated_on === preferredStage);
-        const pool = finalists.length ? finalists
-            : state.runs.filter((run) => run.target === target && run.evaluated_on === "cv");
-        const best = pool.filter((run) => Number.isFinite(run.scores.combined))
+    const cvRuns = state.runs.filter((run) =>
+        /(?:^|_)cv\d*$/.test(run.evaluated_on) && Number.isFinite(run.scores.combined));
+    for (const target of ["binary", "multiclass"]) {
+        const best = cvRuns.filter((run) => run.target === target)
             .sort((a, b) => b.scores.combined - a.scores.combined || b.id - a.id)[0];
         byId(`${target}-best`).textContent = format(best?.scores.combined);
         byId(`${target}-label`).textContent = best
-            ? `Combined · ${best.model} · Run #${best.id}` : "No comparable cross-validation runs";
+            ? `Combined · ${best.model} · Run #${best.id} · ${best.stage.replace(/\bCV\b/g, "cross-validation")}`
+            : "No comparable cross-validation runs";
     }
 }
 
