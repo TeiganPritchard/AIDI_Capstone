@@ -73,7 +73,7 @@ function updateSummary() {
             .sort((a, b) => b.scores.combined - a.scores.combined || b.id - a.id)[0];
         byId(`${target}-best`).textContent = format(best?.scores.combined);
         byId(`${target}-label`).textContent = best
-            ? `Combined · ${best.model} · Run #${best.id}` : "No comparable CV runs";
+            ? `Combined · ${best.model} · Run #${best.id}` : "No comparable cross-validation runs";
     }
 }
 
