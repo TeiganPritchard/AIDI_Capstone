@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Experiment history</title>
+    <link rel="stylesheet" href="/dashboard.css">
+    <script src="/dashboard.js" defer></script>
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand"><span class="brand-icon" aria-hidden="true">▥</span> Injury Risk Models</div>
+        <nav class="page-nav" aria-label="Main navigation"><a href="/" aria-current="page">Experiments</a><a href="/predict">Predict</a></nav>
+        <button id="refresh" type="button">Refresh runs</button>
+    </header>
+    <main>
+        <div class="page-heading">
+            <h1>Experiment history</h1>
+            <p>Review model scores and compare the changes behind each run.</p>
+        </div>
+        <section class="summary" aria-label="Experiment summary">
+            <article><span>Saved runs</span><strong id="run-count">—</strong><small id="model-count"></small></article>
+            <article><span>Best binary CV</span><strong id="binary-best">—</strong><small id="binary-label"></small></article>
+            <article><span>Best multiclass CV</span><strong id="multiclass-best">—</strong><small id="multiclass-label"></small></article>
+        </section>
+        <section class="panel analysis" aria-labelledby="analysis-title">
+            <div class="section-header">
+                <div><h2 id="analysis-title">Feature analysis</h2><p id="analysis-status"></p></div>
+                <div class="filters">
+                    <label>Target<select id="analysis-target"><option value="binary">Binary</option><option value="multiclass">Multiclass</option></select></label>
+                    <label>Feature-set evaluation<select id="analysis-stage"></select></label>
+                </div>
+            </div>
+            <div class="analysis-grid">
+                <div id="feature-sets" class="detail-section"></div>
+                <div id="feature-ranking" class="detail-section"></div>
+            </div>
+        </section>
+        <section class="history panel" aria-labelledby="history-title">
+            <div class="section-header">
+                <div><h2 id="history-title">Runs</h2><p id="status" role="status">Loading history…</p></div>
+                <div class="filters">
+                    <label>Search<input id="search" type="search" placeholder="Run, model, feature…"></label>
+                    <label>Target<select id="target"><option value="">All targets</option><option value="binary">Binary</option><option value="multiclass">Multiclass</option></select></label>
+                    <label>Evaluation<select id="stage"><option value="">All evaluations</option></select></label>
+                    <label>Sort by<select id="sort"><option value="id">Newest</option><option value="combined">Combined</option><option value="accuracy">Accuracy</option><option value="f1">Macro F1</option><option value="roc">ROC AUC</option><option value="pr">PR AUC</option><option value="brier">Brier ↓</option></select></label>
+                </div>
+            </div>
+            <div class="table-scroll">
+                <table>
+                    <thead><tr><th scope="col">Run</th><th scope="col">Configuration</th><th scope="col">Evaluation</th><th scope="col">Combined</th><th scope="col">Accuracy</th><th scope="col">Macro F1</th><th scope="col">ROC AUC</th><th scope="col">PR AUC</th><th scope="col">Brier</th></tr></thead>
+                    <tbody id="runs"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <dialog id="details" aria-labelledby="detail-title">
+        <div class="drawer-header">
+            <div><p id="detail-meta"></p><h2 id="detail-title"></h2></div>
+            <form method="dialog"><button aria-label="Close run details" autofocus>Close</button></form>
+        </div>
+        <div id="detail-body"></div>
+    </dialog>
+</body>
+</html>

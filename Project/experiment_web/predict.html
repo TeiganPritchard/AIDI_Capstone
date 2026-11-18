@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Predict injury risk</title>
+    <link rel="stylesheet" href="/dashboard.css">
+    <script src="/predict.js" defer></script>
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand"><span class="brand-icon" aria-hidden="true">▥</span> Injury Risk Models</div>
+        <nav class="page-nav" aria-label="Main navigation"><a href="/">Experiments</a><a href="/predict" aria-current="page">Predict</a></nav>
+    </header>
+    <main>
+        <div class="page-heading">
+            <h1>Predict injury risk</h1>
+            <p>Choose a model, enter one session’s measurements, and see how the model makes its decision.</p>
+        </div>
+        <section class="panel model-loader" aria-labelledby="model-title">
+            <h2 id="model-title">Choose a model</h2>
+            <form id="model-form" class="model-controls">
+                <label>Risk categories<select id="target"><option value="2">Low or High Risk</option><option value="3">Healthy, Low Risk, or Injured</option></select></label>
+                <label>Saved run<select id="model-run" required></select></label>
+                <button id="load-model" type="submit" disabled>Load model</button>
+            </form>
+            <p id="model-status" role="status">Loading saved runs…</p>
+        </section>
+        <div id="prediction-workspace" class="prediction-workspace" hidden>
+            <section class="panel prediction-panel" aria-labelledby="input-title">
+                <div class="prediction-heading">
+                    <div><h2 id="input-title">Enter session data</h2><p>For blank fields, the model uses the median value from training.</p></div>
+                    <button id="use-example" type="button">Fill example values</button>
+                </div>
+                <form id="prediction-form">
+                    <div id="feature-inputs" class="feature-inputs"></div>
+                    <div class="prediction-actions">
+                        <button class="primary-action" id="predict-button" type="submit">Predict</button>
+                        <button type="reset">Clear inputs</button>
+                    </div>
+                </form>
+            </section>
+            <section class="panel prediction-panel prediction-result" aria-labelledby="result-title" aria-live="polite">
+                <h2 id="result-title">Prediction</h2>
+                <p id="prediction-status">Enter session data and select Predict.</p>
+                <div id="prediction-result"></div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

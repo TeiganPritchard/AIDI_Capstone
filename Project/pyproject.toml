@@ -10,8 +10,11 @@ requires-python = ">=3.13"
 dependencies = [
     "catboost>=1.2.10",
     "jupyterlab>=4.6.6",
+    "matplotlib>=3.11.2",
+    "numpy>=2.5.4",
     "pandas>=3.1.1",
     "scikit-learn>=1.9.1",
+    "xgboost>=3.4.1",
 ]
 
 [project.scripts]
